@@ -10,6 +10,7 @@ public class SocketClient {
 		try{
 		 Socket socket=new Socket("127.0.0.1",4700);
 		 //向本机的4700端口发出客户请求
+		 System.out.println("this is client...............");
 		 BufferedReader sin=new BufferedReader(new InputStreamReader(System.in));
 		 //由系统标准输入设备构造BufferedReader对象
 		 PrintWriter os=new PrintWriter(socket.getOutputStream());
@@ -18,6 +19,7 @@ public class SocketClient {
 		 //由Socket对象得到输入流，并构造相应的BufferedReader对象
 		 String readline;
 		 readline=sin.readLine(); //从系统标准输入读入一字符串
+		
 		 while(!readline.equals("bye")){
 		 //若从标准输入读入的字符串为 "bye"则停止循环
 			os.println(readline);
