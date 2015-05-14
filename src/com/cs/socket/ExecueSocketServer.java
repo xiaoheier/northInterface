@@ -25,7 +25,7 @@ public class ExecueSocketServer {
 		os.write("HEARTBEAT RESPONSE");
 		os.write("END\r\n");
 		os.flush();
-		System.out.println("send data....");
+		System.out.println("send data......");
 	}
 	
 	public static boolean isHeartBeat(BufferedReader rdr){
