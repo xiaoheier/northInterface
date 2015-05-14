@@ -19,23 +19,50 @@ public class ExecueSocketServer {
 	 * 
 	 * private static final Executor readtExec=Executors.newFixedThreadPool(1);
 	 */
+	
+	public static void writeHeartBeatRes(PrintWriter os){
+		os.write("START\r\n");
+		os.write("HEARTBEAT RESPONSE");
+		os.write("END\r\n");
+		os.flush();
+		System.out.println("send data....");
+	}
+	
+	public static boolean isHeartBeat(BufferedReader rdr){
+		String heartBeat="";
+		System.out.println("recive data "+heartBeat);
+		try {
+			heartBeat = rdr.readLine();
+			if (heartBeat.startsWith("START")) {
+				System.out.println("string begin Start");
+				heartBeat = rdr.readLine();
+				if (heartBeat.startsWith("HEARTBEATEND")) {
+					return true;
+				}
+			}
+			return false;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		
+	}
 
 	public static void readHeartBeat(Socket conn) {
 		BufferedReader rdr = null;
+		PrintWriter wtr = null;
 		try {
 			rdr = new BufferedReader(new InputStreamReader(
 					conn.getInputStream()));
-			String heartBeat = rdr.readLine();
+			 wtr = new PrintWriter(conn.getOutputStream());  
 			while (true) {
-				System.out.println("recive data "+heartBeat);
-				if (heartBeat.startsWith("START")) {
-					System.out.println("string begin Start");
-					heartBeat = rdr.readLine();
-					if (heartBeat.startsWith("HEARTBEATEND")) {
-						System.out.println("recived heartbeat.....");
-					}
+				if(isHeartBeat(rdr)){
+					System.out.println("is heartBeat");
+					writeHeartBeatRes(wtr);
+				}else{
+					System.out.println("not heart beat");
 				}
-				heartBeat = rdr.readLine();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -43,6 +70,9 @@ public class ExecueSocketServer {
 			try {
 				if (rdr != null) {
 					rdr.close();
+				}
+				if(wtr!=null){
+					wtr.close();
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
