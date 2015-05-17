@@ -1,14 +1,17 @@
 package com.cs.socket;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class SocketClient {
+public class SocketClientTest {
 	public static void main(String args[]) {
+		 Socket socket=null;
 		try{
-		 Socket socket=new Socket("127.0.0.1",4700);
+		 socket=new Socket("127.0.0.1",4700);
+		 new Thread(new SocketClintThreadTest(socket)).start();
 		 //向本机的4700端口发出客户请求
 		 System.out.println("this is client...............");
 		 //由系统标准输入设备构造BufferedReader对象
@@ -23,6 +26,7 @@ public class SocketClient {
 			os.write("END \r\n");
 			os.flush();
 			System.out.println("send data....");
+			
 			Thread.sleep(6000);
 		}
 		/* while(!readline.equals("bye")){
@@ -42,6 +46,14 @@ public class SocketClient {
 		// socket.close(); //关闭Socket
 		}catch(Exception e){
 			System.out.println("Error:"+e);
+			try {
+				if(socket!=null){
+				   socket.close();
+				}
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 		}
 }

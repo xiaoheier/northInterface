@@ -5,10 +5,12 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 
+import com.cs.fm.AlarmInfo;
+
 public class AlarmConsumer implements Runnable {
-	private final BlockingQueue<Object> alarmQueue;
+	private final BlockingQueue<AlarmInfo> alarmQueue;
 	private final Socket sock;
-	public AlarmConsumer(BlockingQueue<Object> queue, Socket sock){
+	public AlarmConsumer(BlockingQueue<AlarmInfo> queue, Socket sock){
 		alarmQueue=queue;
 		this.sock=sock;
 	}
@@ -22,13 +24,11 @@ public class AlarmConsumer implements Runnable {
 		}
 	}
 	
-	public void sendAlarm(Object o){
+	public void sendAlarm(AlarmInfo alarm){
 		PrintWriter wtr = null;
 		try {
 			wtr = new PrintWriter(sock.getOutputStream());
-			wtr.write("START\r\n");
-			wtr.write("HEARTBEAT RESPONSE");
-			wtr.write("END\r\n");
+			wtr.write(alarm.toString());
 			wtr.flush();
 			System.out.println("send data......");
 		} catch (IOException e) {

@@ -11,6 +11,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import com.cs.fm.AlarmInfo;
 import com.cs.util.PropertiesUtil;
 
 public class ExecueSocketServer {
@@ -89,7 +90,7 @@ public class ExecueSocketServer {
 
 	public static void main(String args[]) {
 		ServerSocket server = null;
-		BlockingQueue<Object> alarmQueue=new LinkedBlockingQueue<Object>();
+		BlockingQueue<AlarmInfo> alarmQueue=new LinkedBlockingQueue<AlarmInfo>();
 		try {
 			String port = PropertiesUtil.getInstance().getAttribute(
 					"socketPort");
