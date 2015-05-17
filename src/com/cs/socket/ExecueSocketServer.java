@@ -6,8 +6,10 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import com.cs.util.PropertiesUtil;
 
@@ -87,6 +89,7 @@ public class ExecueSocketServer {
 
 	public static void main(String args[]) {
 		ServerSocket server = null;
+		BlockingQueue<Object> alarmQueue=new LinkedBlockingQueue<Object>();
 		try {
 			String port = PropertiesUtil.getInstance().getAttribute(
 					"socketPort");
@@ -98,7 +101,13 @@ public class ExecueSocketServer {
 						handleRequest(connect);
 					}
 				};
+				//received heart beat
 				socketExec.execute(task);
+				
+				//generate alarm to queue
+				new Thread(new AlarmProducer(alarmQueue)).start();
+				//send alarm from queue to client
+				new Thread(new AlarmConsumer(alarmQueue,connect)).start();
 			}
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
