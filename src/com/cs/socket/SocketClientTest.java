@@ -3,6 +3,7 @@ package com.cs.socket;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 
@@ -15,9 +16,9 @@ public class SocketClientTest {
 		 //向本机的4700端口发出客户请求
 		 System.out.println("this is client...............");
 		 //由系统标准输入设备构造BufferedReader对象
-		 PrintWriter os=new PrintWriter(socket.getOutputStream());
+		 PrintWriter os=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"GBK"));
 		 //由Socket对象得到输出流，并构造PrintWriter对象
-		 BufferedReader is=new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		 BufferedReader is=new BufferedReader(new InputStreamReader(socket.getInputStream(),"GBK"));
 		 //由Socket对象得到输入流，并构造相应的BufferedReader对象
 		 // String readline=is.readLine(); //从系统标准输入读入一字符串
 		while(true){

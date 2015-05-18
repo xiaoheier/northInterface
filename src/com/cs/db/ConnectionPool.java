@@ -38,8 +38,6 @@ public class ConnectionPool {
 	}
 
 	public static void main(String args[]) {
-		
-		
 		 Connection con = null;  
 	        PreparedStatement stmt= null;  
 	        ResultSet rs = null;  

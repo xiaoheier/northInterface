@@ -3,6 +3,7 @@ package com.cs.socket;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -31,7 +32,7 @@ public class ExecueSocketServer {
 		System.out.println("send data......");
 	}
 	
-	public static boolean isHeartBeat(BufferedReader rdr){
+	public static boolean isHeartBeat(BufferedReader rdr) throws IOException{
 		String heartBeat="";
 		System.out.println("recive data "+heartBeat);
 		try {
@@ -47,6 +48,7 @@ public class ExecueSocketServer {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			
 			return false;
 		}
 		
@@ -57,8 +59,8 @@ public class ExecueSocketServer {
 		PrintWriter wtr = null;
 		try {
 			rdr = new BufferedReader(new InputStreamReader(
-					conn.getInputStream()));
-			 wtr = new PrintWriter(conn.getOutputStream());  
+					conn.getInputStream(),"GBK"));
+			 wtr = new PrintWriter(new OutputStreamWriter(conn.getOutputStream(),"GBK"));  
 			while (true) {
 				if(isHeartBeat(rdr)){
 					System.out.println("is heartBeat");
@@ -76,6 +78,9 @@ public class ExecueSocketServer {
 				}
 				if(wtr!=null){
 					wtr.close();
+				}
+				if(conn!=null){
+					conn.close();
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
